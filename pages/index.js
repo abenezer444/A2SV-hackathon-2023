@@ -1,13 +1,20 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
+import ResponseCard from "../components/ResponseCard";
 
 
 
 
 export default function Home() {
   const [query, setquery] = useState("");
-  const [result, setResult] = useState("your answer will appear here");
+  const [result, setResult] = useState([]);
+  //result is the response from the api and i want it to populate the response in the array and map over it to display it in the div
+
+
+  const Content = result.length === 0
+    ? 'start chat'
+    : result.map(cur => <ResponseCard response={cur} />);
 
 
 
@@ -15,6 +22,10 @@ export default function Home() {
 
   async function onSubmit(event) {
     event.preventDefault();
+    setResult(prevResult => [
+      ...prevResult,
+      { author: 'USER', text: query },
+    ]);
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -30,7 +41,11 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setResult(data.result);
+      setResult(prevResult => [
+        ...prevResult,
+        { author: 'AI', text: data.result },
+      ]);
+
       setquery("");
     } catch (error) {
       // Consider implementing your own error handling logic here
@@ -47,8 +62,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+
         <img src="/dog.png" className={styles.icon} />
-        <h3>ask me about the document</h3>
+        <h3>let's learn</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
@@ -57,9 +73,9 @@ export default function Home() {
             value={query}
             onChange={(e) => setquery(e.target.value)}
           />
-          <button>GO</button>
+          <button className={styles.button}>GO</button>
         </form>
-        <div className={styles.result}>{result}</div>
+        <div className={styles.result}>{Content}</div>
       </main>
     </div>
   );
