@@ -64,4 +64,11 @@
 .main .result {
   font-weight: bold;
   margin-top: 40px;
+  background-color: #10a37f; /* Background color */
+  padding: 20px; /* Spacing around the content */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+  text-align: center; /* Center-align text */
+  font-size: 18px; /* Text size */
+  color: #f7f3f3; /* Text color */
 }

@@ -2,9 +2,16 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 
+
+
+
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
-  const [result, setResult] = useState();
+  const [query, setquery] = useState("");
+  const [result, setResult] = useState("your answer will appear here");
+
+
+
+
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -14,17 +21,18 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ question: query }),
       });
 
       const data = await response.json();
+
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
       setResult(data.result);
-      setAnimalInput("");
-    } catch(error) {
+      setquery("");
+    } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
@@ -34,22 +42,22 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
+        <title>PDFY</title>
         <link rel="icon" href="/dog.png" />
       </Head>
 
       <main className={styles.main}>
         <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <h3>ask me about the document</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
             name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
+            placeholder="ask me about the document"
+            value={query}
+            onChange={(e) => setquery(e.target.value)}
           />
-          <input type="submit" value="Generate names" />
+          <button>GO</button>
         </form>
         <div className={styles.result}>{result}</div>
       </main>
