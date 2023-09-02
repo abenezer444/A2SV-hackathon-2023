@@ -10,7 +10,8 @@ const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
 
-  const pdf = await extractTextFromPDF();
+  const pdf = await extractTextFromPDF(req.body.pdfLink);
+
 
 
   if (!configuration.apiKey) {
@@ -34,6 +35,7 @@ export default async function (req, res) {
   }
 
   try {
+
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(query, pdf),

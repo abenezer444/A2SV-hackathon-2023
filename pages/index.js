@@ -2,6 +2,8 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 import ResponseCard from "../components/ResponseCard";
+import InputPdfLink from "../components/InputPdfLink";
+
 
 
 
@@ -9,6 +11,9 @@ import ResponseCard from "../components/ResponseCard";
 export default function Home() {
   const [query, setquery] = useState("");
   const [result, setResult] = useState([]);
+  const [pdfLink, setPdfLink] = useState("");
+
+  console.log(pdfLink)
   //result is the response from the api and i want it to populate the response in the array and map over it to display it in the div
 
 
@@ -32,7 +37,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: query }),
+        body: JSON.stringify({ question: query, pdfLink: pdfLink }),
       });
 
       const data = await response.json();
@@ -62,6 +67,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <InputPdfLink setPdfLink={setPdfLink} />
 
         <img src="/dog.png" className={styles.icon} />
         <h3>let's learn</h3>
